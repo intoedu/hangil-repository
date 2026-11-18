@@ -1,0 +1,9 @@
+{
+  "intoedu/Global-Mart": {
+    "branch": "claude/magical-meitner-h496nk",
+    "install": "npm ci",
+    "build": "npm run build",
+    "maxChangedLines": 300,
+    "deny": [".github/", "package.json", "package-lock.json", "next.config.ts", "tsconfig.json", "eslint.config.mjs", "postcss.config.mjs", "scripts/", "lib/github.ts", "lib/crypto.ts", "app/[lang]/admin/", "components/admin/", "public/data/resident.json"]
+  }
+}
