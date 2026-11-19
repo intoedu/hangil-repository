@@ -40,6 +40,11 @@
 - `data/keys.json` 수정 (담당자가 setup.html 로 만든 내용을 받아서만 반영)
 - 공개 저장소에 연락처·내부 메모·토큰을 남기는 것
 
+## 첨부 파일
+- 고객이 올린 파일은 비공개 저장소 `intoedu/hangil-uploads` 의 `uploads/<회사ID>/<날짜>/...` 에 있고, 이슈 본문 **첨부파일** 목록과 메타의 `files` 에 경로가 있다.
+- 처리할 때 `intoedu/hangil-uploads` 를 연결(add_repo)해 파일을 받는다. 이미지는 대상 저장소 규칙(예: 이미지 변환 도구)대로 웹용으로 만들어 넣는다.
+- 첨부 파일 자체(원본)를 공개 저장소에 그대로 올리지 않는다. 필요한 결과물만 넣는다.
+
 ## 자동 반영 설정
 - 사이트별 소스 브랜치, 설치·빌드 명령, 고칠 수 없는 파일(deny), 변경 한도는 `data/sites.json`.
 - 필요한 Secrets: `CLAUDE_CODE_OAUTH_TOKEN`(또는 `ANTHROPIC_API_KEY`), `SITE_TOKEN`(홈페이지 저장소 Contents 읽기/쓰기).

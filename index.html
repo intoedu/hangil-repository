@@ -69,6 +69,7 @@
   .wide { width: 100%; }
   .btn-lg { padding: 14px; font-size: 16px; }
   .btn-sm { padding: 6px 12px; font-size: 13px; font-weight: 500; }
+  .files { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--muted); }
   .agree { display: flex; gap: 10px; align-items: flex-start; }
   .agree input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); }
   details.policy { margin-top: 8px; font-size: 13px; color: var(--muted); }
@@ -172,7 +173,11 @@
               <select id="contactWay"><option>전화</option><option>문자</option><option>카카오톡</option><option>이메일</option><option>연락 불필요</option></select></div>
             <div class="full"><label class="f" for="refLink">참고자료 링크</label>
               <input type="text" id="refLink" placeholder="교체할 사진·원고를 올린 구글드라이브, 네이버 MYBOX 등의 공유 링크">
-              <div class="hint">사진·문서는 클라우드에 올린 뒤 공유 링크를 붙여 주세요.</div></div>
+              <div class="hint">파일이 크면 클라우드에 올린 뒤 공유 링크를 붙여 주셔도 됩니다.</div></div>
+            <div class="full" id="fileBox" hidden><label class="f" for="files">파일 첨부</label>
+              <input type="file" id="files" multiple accept="image/*,.pdf,.doc,.docx,.hwp,.hwpx,.ppt,.pptx,.xls,.xlsx,.txt,.zip">
+              <div class="hint">교체할 사진, 수정 원고, 화면 캡처 등 · 최대 10개, 파일당 20MB 이하 · 첨부 파일은 한길마케팅만 볼 수 있습니다.</div>
+              <ul class="files" id="fileList"></ul></div>
             <div class="full"><label class="f" for="memo">기타 전달사항</label><textarea id="memo" style="min-height:72px"></textarea></div>
           </div>
         </section>

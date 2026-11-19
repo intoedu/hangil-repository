@@ -47,6 +47,9 @@
     <h2>2. GitHub 토큰</h2>
     <input type="password" id="token" placeholder="github_pat_로 시작하는 토큰" autocomplete="off">
     <div class="hint">권한: 저장소 <b>intoedu/hangil-repository</b> 하나만, <b>Issues: Read and write</b> 하나만. 다른 권한은 주지 마세요.</div>
+    <label for="uploadToken" style="margin-top:6px">파일 업로드용 토큰 (선택)</label>
+    <input type="password" id="uploadToken" placeholder="github_pat_로 시작하는 토큰 · 비우면 파일 첨부 없이 만듭니다" autocomplete="off">
+    <div class="hint">권한: 비공개 저장소 <b>intoedu/hangil-uploads</b> 하나만, <b>Contents: Read and write</b> 하나만. 위 토큰과 반드시 다른 토큰이어야 합니다.</div>
   </section>
 
   <div class="row"><button id="go">키 만들기</button><span id="msg" class="err"></span></div>
@@ -80,6 +83,8 @@ $("#go").addEventListener("click", async () => {
   $("#msg").textContent = "";
   const token = $("#token").value.trim();
   if (!/^(github_pat_|ghp_)/.test(token)) { $("#msg").textContent = "GitHub 토큰을 확인해 주세요."; return; }
+  const uploadToken = $("#uploadToken").value.trim();
+  if (uploadToken && (!/^(github_pat_|ghp_)/.test(uploadToken) || uploadToken === token)) { $("#msg").textContent = "파일 업로드용 토큰을 확인해 주세요. 위 토큰과 다른 토큰이어야 합니다."; return; }
   const rows = $("#companies").value.split("\n").map(l => l.split("|").map(s => s.trim())).filter(r => r[0]);
   for (const r of rows) if (!/^[A-Z]{2,6}$/.test(r[0]) || !r[1] || !/^[\w.-]+\/[\w.-]+$/.test(r[2] || "")) { $("#msg").textContent = "회사 목록 형식을 확인해 주세요: " + r.join(" | "); return; }
   const rekey = new Set([...document.querySelectorAll("[data-rekey]:checked")].map(x => x.dataset.rekey));
@@ -91,14 +96,14 @@ $("#go").addEventListener("click", async () => {
       if (next.companies[id] && !rekey.has(id) && !given) { Object.assign(next.companies[id], { name, repo, site: site || "" }); continue; }
       if (given && (Vault.companyId(given) !== id || given.replace(/[^A-Za-z0-9]/g, "").length < 14)) throw new Error(`${name}의 회사 키는 ${id}- 로 시작하고 충분히 길어야 합니다.`);
       const key = given ? given.toUpperCase() : Vault.newKey(id);
-      const box = await Vault.lock(key, { token, company: id });
+      const box = await Vault.lock(key, uploadToken ? { token, uploadToken, company: id } : { token, company: id });
       next.companies[id] = { name, repo, site: site || "", ...box };
       made.push([name, key]);
     }
     $("#keys").innerHTML = made.length ? made.map(([n, k]) => `<tr><td>${n}</td><td class="key">${k}</td></tr>`).join("") : `<tr><td colspan="2">새로 만든 키가 없습니다 (정보만 갱신)</td></tr>`;
     $("#out").value = JSON.stringify(next, null, 2);
     $("#result").hidden = false;
-    $("#token").value = "";
+    $("#token").value = ""; $("#uploadToken").value = "";
   } catch (e) { $("#msg").textContent = "실패: " + e.message; }
   finally { $("#go").disabled = false; $("#go").textContent = "키 만들기"; }
 });
