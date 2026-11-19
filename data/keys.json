@@ -1,1 +1,14 @@
-{ "version": 1, "companies": {} }
+{
+  "version": 1,
+  "companies": {
+    "GM": {
+      "name": "글로벌마트",
+      "repo": "intoedu/Global-Mart",
+      "site": "https://intoedu.github.io/Global-Mart/ko/",
+      "iter": 600000,
+      "salt": "OkwFLxavqsLNiyKbAdFJJQ==",
+      "iv": "K00eo1KZn0nyBegm",
+      "ct": "fuIKo7ZTUmVlcye3bRBBFwSXrSCTCgwqhZl1toK0++YZx07+8ox7vdZiedIhVgRmxt0+oXL0upjvascLG88TssTBBR8frf1h2uE6rAhWp6viTEH1MbFYJFEksJDgZ3awLYo5svqj09JZIv49SG/n0vvnmTcouzecVpBM5M3tC43qMbny+AGHbA=="
+    }
+  }
+}
