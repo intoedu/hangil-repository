@@ -37,7 +37,7 @@
 
   <section class="card">
     <h2>1. 회사 목록</h2>
-    <div class="hint">한 줄에 한 회사: <code>회사ID | 회사 이름 | 홈페이지 저장소 | 홈페이지 주소</code> · 회사ID는 영문 2~6글자</div>
+    <div class="hint">한 줄에 한 회사: <code>회사ID | 회사 이름 | 홈페이지 저장소 | 홈페이지 주소 | 회사 키(선택)</code> · 회사ID는 영문 2~6글자 · 회사 키를 비우면 새로 만들고, 미리 정한 키가 있으면 다섯 번째 칸에 넣으세요.</div>
     <textarea id="companies">GM | 글로벌마트 | intoedu/Global-Mart | https://intoedu.github.io/Global-Mart/ko/</textarea>
     <div class="hint">이미 키가 있는 회사는 그대로 두고 새 회사만 키를 만듭니다. 기존 회사 키를 바꾸려면 아래에서 체크하세요.</div>
     <div id="existing" class="hint"></div>
@@ -87,9 +87,10 @@ $("#go").addEventListener("click", async () => {
   try {
     const next = { version: 1, companies: { ...current.companies } };
     const made = [];
-    for (const [id, name, repo, site] of rows) {
-      if (next.companies[id] && !rekey.has(id)) { Object.assign(next.companies[id], { name, repo, site: site || "" }); continue; }
-      const key = Vault.newKey(id);
+    for (const [id, name, repo, site, given] of rows) {
+      if (next.companies[id] && !rekey.has(id) && !given) { Object.assign(next.companies[id], { name, repo, site: site || "" }); continue; }
+      if (given && (Vault.companyId(given) !== id || given.replace(/[^A-Za-z0-9]/g, "").length < 14)) throw new Error(`${name}의 회사 키는 ${id}- 로 시작하고 충분히 길어야 합니다.`);
+      const key = given ? given.toUpperCase() : Vault.newKey(id);
       const box = await Vault.lock(key, { token, company: id });
       next.companies[id] = { name, repo, site: site || "", ...box };
       made.push([name, key]);
